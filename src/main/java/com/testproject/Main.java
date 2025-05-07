@@ -26,7 +26,6 @@ public class Main {
     public static void main(String[] args) {
         Main m = new Main ();
         Connection con = m.get_Db_Connection();
-
         try{
             con.close();
         }catch(Exception ex){
