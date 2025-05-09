@@ -21,13 +21,16 @@ public class DatabaseRead {
             }
 
             try (PreparedStatement ps = con.prepareStatement(
-                    "SELECT officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory FROM offices WHERE country = ?")) {
+                    "SELECT officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, " +
+                            "territory FROM offices WHERE country = ?")) {
 
                 ps.setString(1, "USA");
 
                 try (ResultSet rs = ps.executeQuery()) {
-                    System.out.println(String.format("%-10s | %-20s | %-15s | %-30s | %-30s | %-15s | %-15s | %-10s | %-15s",
-                            "OfficeCode", "City", "Phone", "Address1", "Address2", "State", "Country", "Postal", "Territory"));
+                    System.out.println(String.format("%-10s | %-20s | %-15s | %-30s | %-30s | %-15s | %-15s | %-10s |" +
+                                    " %-15s",
+                            "OfficeCode", "City", "Phone", "Address1", "Address2", "State", "Country", "Postal",
+                            "Territory"));
                     System.out.println(new String(new char[180]).replace('\0', '-'));
 
                     while (rs.next()) {
@@ -43,7 +46,8 @@ public class DatabaseRead {
                                 rs.getString(9)   // territory
                         ));
 
-                        System.out.println(String.format("%-10s | %-20s | %-15s | %-30s | %-30s | %-15s | %-15s | %-10s | %-15s",
+                        System.out.println(String.format("%-10s | %-20s | %-15s | %-30s | %-30s | %-15s | %-15s " +
+                                        "| %-10s | %-15s",
                                 rs.getString(1),
                                 rs.getString(2),
                                 rs.getString(3),

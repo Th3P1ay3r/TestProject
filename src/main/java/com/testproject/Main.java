@@ -5,21 +5,32 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Main {
-    private Connection get_Db_Connection() {
+    private Connection db_connect() {
         Connection con = null;
         try {
+            Thread.sleep(30000);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testdb?autoReconnect=true&useSSL=false&serverTimezone=UTC",
-                    "root",
-                    ""
-            );
-            System.out.println("Database connected successfully");
-        } catch (ClassNotFoundException e) {
-            System.err.println("JDBC Driver not found: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Connection failed: " + e.getMessage());
         }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        int attempt = 1;
+
+        while(true) {
+            try {
+                Thread.sleep(5000);
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/testdb?useSSL=false&allowPublicKeyRetrieval=true", "root", "root");
+                System.out.println("Successful connected.");
+                break;
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Fail to connect, attempt = " + attempt);
+                attempt++;
+            }
+        }
+
         return con;
     }
 
@@ -28,7 +39,7 @@ public class Main {
         int retries = 3;
 
         for (int i = 0; i < retries; i++) {
-            try (Connection con = m.get_Db_Connection()) {
+            try (Connection con = m.db_connect()) {
                 if (con != null) {
                     DatabaseRead dbReader = new DatabaseRead(con);
                     dbReader.read();

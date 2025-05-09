@@ -1,0 +1,14 @@
+   services:
+    # Application Dockerfile is in same folder which is .
+    app:
+      build: .
+
+    # db is is db folder
+    db:
+      build: database/.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: testdb
+      ports:
+        - "33060:3306"
